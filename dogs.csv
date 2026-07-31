@@ -1,0 +1,11 @@
+ID,name,image,sex,breed,age_years,age_months,size,color,minimum_child_age,good_with_dogs,good_with_cats,energy,personality,house_trained,special_needs,medical_notes,adoption_fee,intake_date,adoption_status
+K7M2Q,Rover,rover.jpeg,Male,Labrador Retriever,1,6,Large,Black,10,Yes,No,High,Friendly,Yes,None,"Vaccinated; Microchipped; Heartworm Negative",$130,2026-06-14,Available
+P4X8L,Candied Pecan,candied_pecan.jpeg,Female,Golden Retriever,5,2,Large,Golden,8,Yes,Yes,Medium,Gentle,Yes,None,"Vaccinated; Microchipped",$130,2026-05-29,Available
+R9D1C,Jamie,jamie.jpeg,Male,Beagle,3,4,Medium,Tri-color,5,No,Yes,Medium,Curious,Yes,None,"Vaccinated; Treated for ear infection",$130,2026-07-02,Available
+H2W7N,JuJu,juju.jpeg,Female,Mixed Breed,0,1,Medium,Tan,0,Yes,Yes,High,Playful,Yes,None,"Vaccinated; Microchipped",$130,2026-07-10,Available
+M8Q5B,Leo,leo.jpeg,Male,German Shepherd,5,0,Large,Black and Tan,16,Yes,No,High,Loyal,Yes,None,"Vaccinated; On joint supplement",$130,2026-04-18,Available
+T3L9F,Reign,reign.jpeg,Female,Border Collie,1,10,Medium,Black and White,0,Yes,No,High,Intelligent,Yes,None,"Vaccinated; Microchipped",$130,2026-07-12,Available
+V6J4K,Max,max.jpeg,Male,Siberian Husky,3,11,Large,Gray and White,0,Yes,No,High,Energetic,Yes,None,"Vaccinated; Microchipped",$275,2026-06-21,Available
+N1P8R,Scruffleupagus,scruffleupagus.jpeg,Female,Boxer,4,2,Large,Fawn,9,Yes,Yes,Medium,Goofy,Yes,None,"Vaccinated; Allergy medication",$130,2026-05-11,Available
+C5Y2T,Tonka,tonka.jpeg,Male,Cocker Spaniel,10,3,Medium,Buff,0,Yes,Yes,Low,Calm,Yes,Arthritis,"Vaccinated; Arthritis medication",$25,2026-03-08,Available
+X9A6M,Yasmin,yasmin.jpeg,Female,Poodle,4,2,Medium,White,0,Yes,Yes,Medium,Affectionate,Yes,None,"Vaccinated; Microchipped",$275,2026-06-30,Available
