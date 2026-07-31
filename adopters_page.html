@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+    <title>Adopt a Dog</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='employee_portal.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>Adopt a Dog</h1>
+
+        
+
+        <form id="filterForm" method="GET">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Name</th>
+                        <th>Age</th>
+                        <th>Breed</th>
+                        <th>Sex</th>
+                        <th>Adopt</th>
+                        
+                    </tr>
+
+                    <tr>
+                        
+
+                        <th colspan="2">
+                            <input
+                                type="text"
+                                id="nameSearch"
+                                name="name"
+                                {% if name %}
+                                    value="{{ name }}"
+                                {% else %}
+                                    placeholder="Search..."
+                                {% endif %}
+                            >
+                        </th>
+
+                        <th>
+                            <select name="age" onchange="this.form.submit()">
+                                <option value="Any" {% if age == "Any" %}selected{% endif %}>
+                                    Any
+                                </option>
+
+                                <option value="Youngest" {% if age == "Youngest" %}selected{% endif %}>
+                                    Youngest
+                                </option>
+
+                                <option value="Oldest" {% if age == "Oldest" %}selected{% endif %}>
+                                    Oldest
+                                </option>
+                            </select>
+                        </th>
+
+                        <th>
+                            <details>
+                                <summary>Breed</summary>
+
+                                {% for breed in breed_list %}
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="breed"
+                                            value="{{ breed }}"
+                                            
+                                            {% if breed in selected_breeds %}
+                                                checked
+                                            {% endif %}
+                                        >
+                                        {{ breed }}
+                                    </label>
+                                {% endfor %}
+
+                            </details>
+                        </th>
+
+                        <th>
+                            <select name="sex" onchange="this.form.submit()">
+                                <option value="Any" {% if sex == "Any" %}selected{% endif %}>
+                                    Any
+                                </option>
+
+                                <option value="Male" {% if sex == "Male" %}selected{% endif %}>
+                                    Male
+                                </option>
+
+                                <option value="Female" {% if sex == "Female" %}selected{% endif %}>
+                                    Female
+                                </option>
+                            </select>
+                        </th>
+
+                        
+
+                        
+                    </tr>
+                </thead>
+
+                <tbody id="dogTable">
+                    {% for dog in dogs_list %}
+                    <tr>
+                        <td>
+                            <img
+                                src="{{ url_for('static', filename='images/' + dog.image) }}"
+                                alt="{{ dog.name }}"
+                                style="
+                                    display:block;
+                                    border:2px solid black;
+                                    border-radius:16px;
+                                    width:100px;
+                                    height:100px;
+                                    object-fit:cover;
+                                "
+                            >
+                        </td>
+
+                        <td>{{ dog.name }}</td>
+                        <td>{{ dog.age }}</td>
+                        <td>{{ dog.breed }}</td>
+                        <td>{{ dog.sex }}</td>
+                        
+
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            <input type="hidden" name="remove" value="{{ remove_mode }}">
+        </form>
+
+        <p>Total dogs: {{ dogs_list|length }}</p>
+
+    </main>
+
+    <script>
+        const searchBox = document.getElementById("nameSearch");
+        const table = document.getElementById("dogTable");
+        const filterForm = document.getElementById("filterForm");
+
+        let timeout = null;
+
+        searchBox.addEventListener("input", function () {
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+
+                const formData = new FormData(filterForm);
+                const params = new URLSearchParams(formData);
+
+                fetch(`/adopt-a-dog/search?${params}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        table.innerHTML = data;
+                    });
+
+            }, 300);
+
+        });
+        document.querySelectorAll('input[name="breed"]').forEach(box => {
+
+        box.addEventListener("change", function () {
+
+            const formData = new FormData(filterForm);
+            const params = new URLSearchParams(formData);
+
+            fetch(`/adopt-a-dog/search?${params}`)
+                .then(response => response.text())
+                .then(data => {
+                    table.innerHTML = data;
+                });
+
+        });
+
+    });
+    </script>
+
+</body>
+</html>

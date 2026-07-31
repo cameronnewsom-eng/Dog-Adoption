@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+    <title>Employee Portal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile_editor.css') }}">
+</head>
+<body class="dog_profile_editor">
+    <main class="container">
+        <form method="POST" enctype="multipart/form-data">
+            <h1>Employee Portal - {{dog.name}}</h1>
+            <p style="text-align: left;"><a href="/employee"> &lt;Back</a></p>
+            <div style="display: flex; gap: 0px; align-items: flex-start; justify-content: center;">
+                <div>
+                    <label for="image-upload">
+                        <p style="text-align: center; margin-top: 0px;"><img id=dog-preview class=dog-image 
+                            alt="{{ dog.name }}"
+                            style="border: 2px solid black; border-radius: 16px 0 0 16px;"
+                            onclick="document.getElementById('dog_image').click()"
+                            src="{{ url_for('static', filename='images/' + dog.image) }}">
+                        </p>
+                    </label>
+                    <input id="dog_image" type="file" name="image" accept="image/*" hidden>
+                    
+                </div>
+                <div>
+                    <table>
+                        <div>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Breed</th>
+                                <th>Sex</th>
+                            </tr>
+                            <tr>
+                                <td><textarea name="name" rows="1" required {% if 'name' in errors %} style="border: 4px solid red;" {% endif %}>{{dog.name}}</textarea></td>
+                                <td class = age>
+                                    <select name="age_years" {% if 'age' in errors %}style="border: 4px solid red;"{% endif %}>
+                                        {% for year in range(0, 21) %}
+                                            <option value="{{ year }}" {% if dog.age_years|int == year %}selected{% endif %}>
+                                                {{ year }} year{% if year != 1 %}s{% endif %}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <select name="age_months" {% if 'age' in errors %}style="border: 4px solid red;"{% endif %}>
+                                        {% for month in range(0, 12) %}
+                                            <option value="{{ month }}" {% if dog.age_months|int == month %}selected{% endif %}>
+                                                {{ month }} month{% if month != 1 %}s{% endif %}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td><textarea name="breed" rows="1" required {% if 'breed' in errors %} style="border: 4px solid red;" {% endif %}>{{dog.breed}}</textarea></td>
+                                <td>
+                                    <select name="sex" required {% if 'sex' in errors %} style="border: 4px solid red;" {% endif %}>
+                                        <option value = " " {% if dog.sex == " " %}selected{% endif %}> </option>
+                                        <option value="Male" {% if dog.sex == "Male" %}selected{% endif %}>
+                                            Male
+                                        </option>
+
+                                        <option value="Female" {% if dog.sex == "Female" %}selected{% endif %}>
+                                            Female
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </div>
+
+                        <div>
+                            <tr>
+                                <th>Color</th>
+                                <th>Size</th>
+                                <th>Energy Level</th>
+                                <th>Personality</th>
+                            </tr>
+                            <tr>
+                                <td><textarea name="color" rows="1" required {% if 'color' in errors %} style="border: 4px solid red;" {% endif %}>{{dog.color}}</textarea></td>
+                                <td>
+                                    <select name="size" required {% if 'size' in errors %} style="border: 4px solid red;" {% endif %}>
+                                        <option value="Small" {% if dog.size == "Small" %}selected{% endif %}>
+                                            Small
+                                        </option>
+
+                                        <option value="Medium" {% if dog.size == "Medium" %}selected{% endif %}>
+                                            Medium
+                                        </option>
+
+                                        <option value="Large" {% if dog.size == "Large" %}selected{% endif %}>
+                                            Large
+                                        </option>
+                                    </select>
+                                </td>
+                                <td><textarea name="energy" rows="1" required {% if 'energy' in errors %} style="border: 4px solid red;" {% endif %}>{{dog.energy}}</textarea></td>
+                                <td><textarea name="personality" rows="1" required {% if 'personality' in errors %} style="border: 4px solid red;" {% endif %}>{{dog.personality}}</textarea></td>
+                            </tr>
+                        </div>
+
+                        <div>
+                            <tr>
+                                <th>House Trained</th>
+                                <th>Must meet kids above</th>
+                                <th>Good with dogs</th>
+                                <th>Good with cats</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select name="house_trained" required {% if 'house_trained' in errors %} style="border: 4px solid red;" {% endif %}>
+                                        <option value="Yes" {% if dog.house_trained == "Yes" %}selected{% endif %}>
+                                            Yes
+                                        </option>
+
+                                        <option value="No" {% if dog.house_trained == "No" %}selected{% endif %}>
+                                            No
+                                        </option>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <select name="minimum_child_age" required {% if 'minimum_child_age' in errors %} style="border: 4px solid red;" {% endif %}>
+                                        <option value="Not required" {% if dog.minimum_child_age == "Not required" %}selected{% endif %}>
+                                            Not required
+                                        </option>
+
+                                        {% for age in range(0, 13) %}
+                                            <option value="{{age}}" {% if dog.minimum_child_age == age %}selected{% endif %}>
+                                                {{age}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+
+                                <td><textarea name="good_with_dogs" rows="1" required {% if 'good_with_dogs' in errors %} style="border: 4px solid red;" {% endif %}>{{dog.good_with_dogs}}</textarea></td>
+                                <td><textarea name="good_with_cats" rows="1" required {% if 'good_with_cats' in errors %} style="border: 4px solid red;" {% endif %}>{{dog.good_with_cats}}</textarea></td>
+                            </tr>
+                        </div>
+
+                        <div>
+                            <tr>
+                                <th>Doctors Notes</th>
+                                <th>Adoption Fee</th>
+                                <th>Adoption Status</th>
+                                <th id="save_button" rowspan="2">
+                                    <button type="submit" display="block" class="save-button" style="--start-color: {{ start_color }}">
+                                        Save Changes
+                                    </button>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td><textarea name="medical_notes" rows="1" required>{{dog.medical_notes}}</textarea></td>
+                                <td><textarea name="adoption_fee" rows="1" required>{{dog.adoption_fee}}</textarea></td>
+
+                                <td>
+                                    <select name="adoption_status" required>
+                                        <option value="Available" {% if dog.adoption_status == "Available" %}selected{% endif %}>
+                                            Available
+                                        </option>
+
+                                        <option value="On Hold" {% if dog.adoption_status == "On Hold" %}selected{% endif %}>
+                                            On Hold
+                                        </option>
+
+                                        <option value="Foster Care" {% if dog.adoption_status == "Foster Care" %}selected{% endif %}>
+                                            Foster Care
+                                        </option>
+
+                                        <option value="CBC" {% if dog.adoption_status == "CBC" %}selected{% endif %}>
+                                            CBC
+                                        </option>
+
+                                        <option value="Dog Holding" {% if dog.adoption_status == "Dog Holding" %}selected{% endif %}>
+                                            Dog Holding
+                                        </option>
+
+                                        <option value="Adopted" {% if dog.adoption_status == "Adopted" %}selected{% endif %}>
+                                            Adopted
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </div>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </main>
+    <script>
+        document.getElementById("dog_image").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                document.getElementById("dog-preview").src = URL.createObjectURL(file);
+            }
+        });
+    </script>
+</body>
+
+</html>

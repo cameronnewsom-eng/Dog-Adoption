@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+    <title>Employee Portal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='employee_portal.css') }}">
+</head>
+{% for dog in dogs_list %}
+<tr>
+    <td>
+        <img src="{{ url_for('static', filename='images/' + dog.image) }}"
+             style="border:2px solid black; border-radius:16px; object-fit:cover;
+             width:100px; height:100px; object-fit: cover;" >
+    </td>
+
+    <td>{{ dog.name }}</td>
+    <td>{{ dog.age }}</td>
+    <td>{{ dog.breed }}</td>
+    <td>{{ dog.sex }}</td>
+    
+</tr>
+{% endfor %}
