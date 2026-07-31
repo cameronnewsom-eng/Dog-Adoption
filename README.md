@@ -1,9 +1,9 @@
 # Dog Adoption Website
 ## Welcome
-#________________________________________________________________________________________________________________________________________
+#_________________________________________________________________________________________________________
 This is the start of a dog adoption website. When it first opens you can choose to have the adopters view or the employee view which have different functions (See the Adopt a Dog and Employee Portal sections).
 ## Tutorial
-#________________________________________________________________________________________________________________________________________
+#_________________________________________________________________________________________________________
 Download all the files and run app.py. Make sure that you have all the requirements to import the necessary libraries (See the Requirements section or the requirements.txt file). When the file first runs you will be directed to a page with two buttons, one to see the adopter point of view and one to see the employee point of view. Click on either and you should see a table with dogs.
 If you see table headers but no table rows or dogs show up then run the create_dog_database.py file and relaunch app.py.
 ### Adopt a Dog
@@ -29,7 +29,7 @@ python-dateutil==2.9.0.post0
 six==1.17.0
 Werkzeug==3.1.8
 ## Areas for Continued Development
-#________________________________________________________________________________________________________________________________________
+#_________________________________________________________________________________________________________
 Updates are on their way! More changes will come to increase functionality.
 1. The Adopt a Dog page will have buttons to adopt a dog, this will redirect a user to the dog's specific profile complete with a photo and description. The adopter can then choose to schedule a time to meet the dog in person or if they are really sure they can make a downpayment to put the dog on hold.
 2. The Adopt a Dog page will have a link to take a short Dog Matcher quiz. Based on questions about the adopters lifestyle they will be matched with dogs who would fit.
