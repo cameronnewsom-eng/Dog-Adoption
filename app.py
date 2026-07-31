@@ -12,11 +12,13 @@ UPLOAD_FOLDER = "static/images"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 def format_word(word):
+    #Makes a string have the first letter capitalized and the rest lower case. Keeps things like breed uniform in the database
     first_letter = word[0].upper()
     rest_of_word = word[1:].lower()
     return first_letter + rest_of_word
 
 def format_age(years, months):
+    #Prints the age in the column the right way
     if years == 0:
         if(months == 1):
             return f"1 month"
@@ -34,6 +36,7 @@ def format_age(years, months):
             return f"{years} years, {months} months"
 
 def generate_ID():
+    #Generates random 5 character ID's for each dog and keep going until the ID is unique
     with sqlite3.connect("available_dogs.db") as conn:
         while True:
             characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -48,20 +51,23 @@ def generate_ID():
                 return dog_ID
 
 def valid_dog_id(dog_ID):
+    #Makes sure web addresses actually exist
     return bool(re.fullmatch(r"[A-Z0-9]{5}", dog_ID))
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    #Home page justs lets people choose between the Adopters perspectie and the Employee Perspective
+    return render_template('index.html')
     
 
 @app.route("/employee")
 def employee_page():
+    #When the employee page first gets loaded this is what it looks like
     name = request.args.get("name", "")
     sex = request.args.get("sex", "Any")
     age = request.args.get("age", "Any")
     selected_breeds = request.args.getlist("breed")
-    remove_mode = request.args.get("remove", "false")
+    remove_mode = request.args.get("remove", "false") #This is to see if they are removing dogs or editing dogs since the icons change
     
     
     
@@ -69,11 +75,11 @@ def employee_page():
 
         where = []
         params = []
-
+        #Name Sorting
         if name:
             where.append("name LIKE ?")
             params.append(f"%{name}%")
-
+        #Breed Sorting
         if selected_breeds:
             placeholders = ",".join(["?"] * len(selected_breeds))
             where.append(f"breed IN ({placeholders})")
@@ -135,6 +141,7 @@ def employee_page():
 
 @app.route("/employee/search")
 def search_dogs():
+    #Once any filter gets applied this gets called.
     name = request.args.get("name", "")
     sex = request.args.get("sex", "Any")
     age = request.args.get("age", "Any")
@@ -144,10 +151,11 @@ def search_dogs():
     with sqlite3.connect("available_dogs.db") as conn:
         where = []
         params = []
-
+        #Name sorting
         if name:
             where.append("name LIKE ?")
             params.append(f"%{name}%")
+        #Breed sorting
         if selected_breeds:
             placeholders = ",".join(["?"] * len(selected_breeds))
             where.append(f"breed IN ({placeholders})")
@@ -175,7 +183,6 @@ def search_dogs():
         
         
         # Default sorting
-        
         order_by.append("name ASC")
         
         query = "SELECT * FROM available_dogs"
@@ -201,11 +208,12 @@ def search_dogs():
 
 @app.route("/employee/add-a-dog", methods=["GET", "POST"])
 def add_a_dog():
-    dog_ID = generate_ID()
-
+    dog_ID = generate_ID() #Makes ID for new dog
+    
     if(request.method == "POST"):
         errors = []
         image = request.files["image"]
+        #All of this checks if inputs are valid and append the list of errors so I can keep track of what went wrong
         if image.filename != "":
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
@@ -283,6 +291,7 @@ def add_a_dog():
 
         adoption_status = request.form["adoption_status"].strip()
 
+        #Updates values but doesnt save to database yet
         dog = {
             "ID": dog_ID,
             "image": filename,
@@ -304,11 +313,11 @@ def add_a_dog():
             "adoption_status": adoption_status
         }
         
-
+        #Reloads the page if the are errors
         if(len(errors) > 0):
             return render_template("dog_profile_editor.html", dog=dog, errors=errors, start_color="red"
         )
-
+        #If no errors then we can update the database with the new dog
         with sqlite3.connect("available_dogs.db") as conn:
             conn.execute(
                 """
@@ -397,12 +406,12 @@ def delete_dog(dog_ID):
         return "Invalid dog ID", 400
 
     with sqlite3.connect("available_dogs.db") as conn:
-        # Optional: get image name so you can delete the file too
+        #gets rid of image from image files
         dog = conn.execute(
             "SELECT image FROM available_dogs WHERE ID = ?",
             (dog_ID,)
         ).fetchone()
-
+        #Gets rid of dog from database
         conn.execute(
             "DELETE FROM available_dogs WHERE ID = ?",
             (dog_ID,)
@@ -410,7 +419,7 @@ def delete_dog(dog_ID):
 
         conn.commit()
 
-    # Optional: remove image file from static/images
+    
     if dog and dog[0] != "default.png":
         image_path = os.path.join(app.config["UPLOAD_FOLDER"], dog[0])
         if os.path.exists(image_path):
@@ -420,6 +429,7 @@ def delete_dog(dog_ID):
     
 @app.route("/adopt-a-dog")
 def adopt_a_dog():
+    #Loads the adopt a dog page
     name = request.args.get("name", "")
     sex = request.args.get("sex", "Any")
     age = request.args.get("age", "Any")
@@ -432,11 +442,11 @@ def adopt_a_dog():
     
             where = []
             params = []
-    
+            #Name Sorting
             if name:
                 where.append("name LIKE ?")
                 params.append(f"%{name}%")
-    
+            #Breed Sorting
             if selected_breeds:
                 placeholders = ",".join(["?"] * len(selected_breeds))
                 where.append(f"breed IN ({placeholders})")
